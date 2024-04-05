@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "./build/",
+        "module": "CommonJS",
+        // "moduleResolution": "bundler",
+		"esModuleInterop": true,
+        "target": "ESNext",
+        "jsx": "react",
+        "allowJs": true,
+        "strict": true,
+    },
+    "include": [ "src/**/*", "assets.d.ts" ]
+}
