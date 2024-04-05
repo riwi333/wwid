@@ -38,6 +38,8 @@ export default {
     plugins: [
         new HtmlWebpackPlugin({
             template: "index.html",
+            favicon: path.resolve(__dirname, "assets",
+                "bootstrap-icons/cloud-fill.svg"),
         }),
         new MonacoEditorWebpackPlugin({}),
     ],
