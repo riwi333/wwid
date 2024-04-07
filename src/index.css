@@ -6,3 +6,7 @@ body {
 .editor-container {
     height: 100%;
 }
+
+.toolbar-container .btn {
+    max-width: 10%;
+}
