@@ -6,7 +6,7 @@ export type ModelWrapper = {
 };
 
 export const Fixed = {
-    MaxPreviewLength: 5,
+    MaxPreviewLength: 15,
 }
 
 // get a short preview of the given graph description to display on its tab

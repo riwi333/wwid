@@ -4,6 +4,7 @@ import * as monaco from 'monaco-editor';
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Form from 'react-bootstrap/Form';
 
 import { ModelWrapper, previewModelText } from './common';
 
@@ -28,30 +29,33 @@ export default function Toolbar({ wrappers, setWrappers, activeID, setActiveID }
             { 
                 id: id1,
                 model: model1,
-            } 
+            }
         ]);
     }
 
     const tabs: React.ReactElement[] = wrappers.map((wrapper) => {
         return (
-            <Button 
+            <Button
                 key={ wrapper.id }
                 onClick={ () => setActiveID(wrapper.id) }
                 variant={ wrapper.id == activeID ? "primary" : "light" }
             >
-                { previewModelText(wrapper.model) }
+                <Form.Control 
+                    type="text" 
+                    placeholder={ previewModelText(wrapper.model) } />
             </Button>
         );
     });
-    tabs.push(
+    tabs.splice(0, 0, (
         <Button
+            className="btn-add"
             key="add"
             onClick={ addTabClickHandler }
             variant="secondary"
         >
             Add
         </Button>
-    )
+    ));
 
     return (
         <>

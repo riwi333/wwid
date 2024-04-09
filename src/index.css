@@ -9,4 +9,10 @@ body {
 
 .toolbar-container .btn {
     max-width: 10%;
+    text-align: left;
+}
+
+.toolbar-container .btn-add {
+    max-width: 5%;
+    text-align: center;
 }
