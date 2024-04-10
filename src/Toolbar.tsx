@@ -40,7 +40,7 @@ export default function Toolbar({ wrappers, setWrappers, activeID, setActiveID }
                 onClick={ () => setActiveID(wrapper.id) }
                 variant={ wrapper.id == activeID ? "primary" : "light" }
             >
-                <Form.Control 
+                <Form.Control
                     type="text" 
                     placeholder={ previewModelText(wrapper.model) } />
             </Button>
