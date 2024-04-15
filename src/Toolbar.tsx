@@ -58,10 +58,8 @@ export default function Toolbar({ wrappers, setWrappers, activeID, setActiveID }
     ));
 
     return (
-        <>
-            <ButtonGroup>
-                { tabs }
-            </ButtonGroup>
-        </>
+        <ButtonGroup className="toolbar">
+            { tabs }
+        </ButtonGroup>
     );
 }

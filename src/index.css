@@ -1,23 +1,30 @@
 html,
-body {
+body,
+#root,
+#root > div {
     height: 100%;
+}
+
+.primary-row {
+    height: 100%;
+    margin-top: 1vh;
 }
 
 .editor-container {
     height: 100%;
 }
 
-.toolbar-container .btn {
+.toolbar .btn {
     max-width: 10%;
     text-align: left;
 }
 
-.toolbar-container .btn-add {
+.toolbar .btn-add {
     max-width: 5%;
     text-align: center;
 }
 
-.toolbar-container .form-control {
+.toolbar .form-control {
     background-color: var(--bs-primary-rgb);
     border: none;
 }

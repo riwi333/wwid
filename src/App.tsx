@@ -25,7 +25,7 @@ export default function App() {
 	return (
 		<>
 			<Container fluid>
-				<Row className="toolbar-container">
+				<Row>
 					<Toolbar
 						wrappers={ wrappers }
 						setWrappers={ setWrappers }
@@ -33,7 +33,7 @@ export default function App() {
 						setActiveID={ setActiveID }
 					/>
 				</Row>
-				<Row>
+				<Row className="primary-row">
 					<Col>
 						<Editor 
 							setGraphDef={ setGraphDef } 
@@ -50,4 +50,4 @@ export default function App() {
 			</Container>
 		</>
 	);
-}
+} 
