@@ -23,6 +23,9 @@ export default function Viz({ graphDef, webStorageLoaded }: VizProps) {
 
 	}, []);
 
+    // [todo] on initial render, mermaid render fails with "node is null" error;
+    // need to be able to undo edits to DOM that mermaid.render does; as a
+    // consequence the stored graph does not appear until graphDef changes
     useEffect(() => {
 
 		if (mermaidDivRef.current &&

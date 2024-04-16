@@ -17,6 +17,7 @@ const wrapper0 = {
 	model: null,
 };
 
+// [todo] get/set all tabs; currently only store definition from active tab
 export default function App() {
 
 	const [ graphDef, setGraphDef ] = useState<string>("");
@@ -41,7 +42,7 @@ export default function App() {
 		setWebStorageLoaded(true);
 
 	}, []);
-	
+
 	useEffect(() => {
 
 		// clear previous timeout; only write to storage if the full duration
@@ -66,14 +67,14 @@ export default function App() {
 	return (
 		<>
 			<Container fluid>
-				{/* <Row>
+				<Row>
 					<Toolbar
 						wrappers={ wrappers }
 						setWrappers={ setWrappers }
 						activeID={ activeID }
 						setActiveID={ setActiveID }
 					/>
-				</Row> */}
+				</Row>
 				<Row className="primary-row">
 					<Col>
 						<Editor
