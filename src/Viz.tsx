@@ -4,9 +4,10 @@ import mermaid from 'mermaid';
 
 type VizProps = {
     graphDef: string;
+    webStorageLoaded: boolean;
 }
 
-export default function Viz({ graphDef }: VizProps) {
+export default function Viz({ graphDef, webStorageLoaded }: VizProps) {
 
     const [ graphSVG, setGraphSVG ] = useState<string>("");
 
@@ -24,16 +25,23 @@ export default function Viz({ graphDef }: VizProps) {
 
     useEffect(() => {
 
-		if (mermaidDivRef.current !== null) {
+		if (mermaidDivRef.current &&
+            webStorageLoaded) {
+            
 			mermaid.render('viz', graphDef, mermaidDivRef.current)
 				.then((res) => {
+
                     // [todo] sanitize SVG? or set mermaid security options?
 					setGraphSVG(res.svg);
 				})
-				.catch((err) => { console.log(err); });		// [watch]
-		}
+				.catch((err) => { 
+                   
+                    // [watch]
+                    console.log(err);
+                });
+        }
 
-	}, [ graphDef ]);
+	}, [ graphDef, webStorageLoaded ]);
 
     return (
         <>
