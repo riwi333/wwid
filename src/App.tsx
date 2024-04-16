@@ -5,9 +5,8 @@ import * as monaco from 'monaco-editor';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-// import Toast from 'react-bootstrap/Toast';
 
-import { ModelWrapper } from './common';
+import { Fixed, ModelWrapper } from './common';
 import { loadWebStorage, saveWebStorage } from './storage';
 import Editor from './Editor';
 import Toolbar from './Toolbar';
@@ -64,7 +63,8 @@ export default function App() {
 
 					saveWebStorage(webStorageRef.current, wrappers);
 				}
-			}, 5000);
+				
+			}, Fixed.WebStorageDirtyTimeout_ms);
 		}
 
 		return () => clearTimeout(timeoutRef.current);

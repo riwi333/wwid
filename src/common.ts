@@ -8,6 +8,7 @@ export type ModelWrapper = {
 export const Fixed = {
     MaxPreviewLength: 15,
     WebStorageMaxidKey: "maxid#",
+    WebStorageDirtyTimeout_ms: 5000,
 }
 
 // get a short preview of the given graph description to display on its tab
