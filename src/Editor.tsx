@@ -54,26 +54,26 @@ export default function Editor({ graphDef, setGraphDef, wrappers, setWrappers,
 			);
 
 			if (editorRef.current) {
-				const model0 = monaco.editor.createModel(graphDef);
+			// 	const model0 = monaco.editor.createModel(graphDef);
 
-				// assign the editor's initial model to state
-				// [] using map() is probs unneeded but shouldn't cause any 
-				// issues
-				setWrappers(wrappers.map((wrapper) => {
+			// 	// assign the editor's initial model to state
+			// 	// [] using map() is probs unneeded but shouldn't cause any 
+			// 	// issues
+			// 	setWrappers(wrappers.map((wrapper) => {
 
-					if (wrapper.id === 0) {
-						return { 
-							...wrapper,
-							model: model0,
-						};
-					} else {
-						return wrapper;
-					}
-				}));
+			// 		if (wrapper.id === 0) {
+			// 			return { 
+			// 				...wrapper,
+			// 				model: model0,
+			// 			};
+			// 		} else {
+			// 			return wrapper;
+			// 		}
+			// 	}));
 
-				// sync the initial editor model between app state and monaco
-				// state
-				editorRef.current.setModel(model0);
+			// 	// sync the initial editor model between app state and monaco
+			// 	// state
+			// 	editorRef.current.setModel(model0);
 
 				setActiveID(0);
 				// setting activeID should trigger the Effect below
