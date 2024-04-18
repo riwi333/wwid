@@ -7,6 +7,7 @@ export type ModelWrapper = {
 
 export const Fixed = {
     MaxPreviewLength: 15,
+    ToastAutohideDelay_ms: 3000,
     WebStorageMaxidKey: "maxid#",
     WebStorageDirtyTimeout_ms: 5000,
 }

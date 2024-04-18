@@ -5,6 +5,8 @@ import * as monaco from 'monaco-editor';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 import { Fixed, ModelWrapper } from './common';
 import { loadWebStorage, saveWebStorage } from './storage';
@@ -24,7 +26,15 @@ export default function App() {
 	const [ wrappers, setWrappers ] = useState<ModelWrapper[]>(wrappers0);
 	const [ activeID, setActiveID ] = useState<number | null>(null);
 	const [ webStorageLoaded, setWebStorageLoaded ] = useState<boolean>(false);
-
+	const [ showStorageLoadToast, setShowStorageLoadToast ] = 
+		useState<boolean>(false);
+	const [ storageLoadToastBody, setStorageLoadToastBody ] = 
+		useState<string>();
+	const [ showStorageSaveToast, setShowStorageSaveToast ] = 
+		useState<boolean>(false);
+		const [ storageSaveToastBody, setStorageSaveToastBody ] = 
+		useState<string>();
+	
 	const webStorageRef = useRef<Storage>();
 	const timeoutRef = useRef<NodeJS.Timeout>();
 
@@ -34,16 +44,18 @@ export default function App() {
 		webStorageRef.current = localStorage;
 		const tmp = loadWebStorage(webStorageRef.current);
 		if (tmp.length > 0) {
-			console.log(`Loaded ${ tmp.length } definitions from Web Storage`);
-
+			setStorageLoadToastBody(
+				`Loaded ${ tmp.length } definitions from Web Storage`
+			);
 			setWrappers(tmp);
 		}
 		// default (no web storage) = `wrappers0 (above)
 		else {
-			console.log("Nothing loaded from Web Storage");
+			setStorageLoadToastBody("Nothing loaded from Web Storage");
 		}
 
 		setWebStorageLoaded(true);
+		setShowStorageLoadToast(true);
 
 	}, []);
 
@@ -58,11 +70,12 @@ export default function App() {
 			timeoutRef.current = setTimeout(() => {
 
 				if (webStorageRef.current) {
-					console.log("Saving the following to Web Storage:");
-					console.log(wrappers);
-
+					setStorageSaveToastBody(`Saving ${ wrappers.length } 
+						definitions to Web Storage`);
 					saveWebStorage(webStorageRef.current, wrappers);
 				}
+
+				setShowStorageSaveToast(true);
 				
 			}, Fixed.WebStorageDirtyTimeout_ms);
 		}
@@ -100,6 +113,27 @@ export default function App() {
 						/>
 					</Col>
 				</Row>
+				<ToastContainer
+					position="bottom-start"
+					style={{ zIndex: 1 }}
+				>
+					<Toast 
+						show={ showStorageLoadToast } 
+						onClose={ () => setShowStorageLoadToast(false) }
+						delay={ Fixed.ToastAutohideDelay_ms }
+						autohide
+					>
+						<Toast.Body>{ storageLoadToastBody }</Toast.Body>
+					</Toast>
+					<Toast
+						show={ showStorageSaveToast }
+						onClose={ () => setShowStorageSaveToast(false) }
+						delay={ Fixed.ToastAutohideDelay_ms }
+						autohide
+					>
+						<Toast.Body>{ storageSaveToastBody }</Toast.Body>
+					</Toast>
+				</ToastContainer>
 			</Container>
 		</>
 	);
