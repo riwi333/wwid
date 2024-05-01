@@ -4,4 +4,4 @@ node_modules/
 # dev
 .vscode/
 build/
-docs.md
+docs/
