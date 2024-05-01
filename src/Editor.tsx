@@ -2,7 +2,39 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import * as monaco from 'monaco-editor';
 
-import { ModelWrapper } from './common';
+import { Fixed, ModelWrapper } from './common';
+
+// custom autocompletion provider
+class MyCompletionProvider implements monaco.languages.CompletionItemProvider {
+
+	public provideCompletionItems(model: monaco.editor.ITextModel, 
+		position: monaco.Position, context: monaco.languages.CompletionContext, 
+		token: monaco.CancellationToken)
+		: monaco.languages.ProviderResult<monaco.languages.CompletionList> {
+		
+		console.log(position);
+		// console.log(context);
+		// console.log(token.toString());
+
+		let word = model.getWordUntilPosition(position);
+		let test_suggest: monaco.languages.CompletionItem = {
+			label: "test suggestion",
+			kind: monaco.languages.CompletionItemKind.Function,
+			documentation: "testing testy testing",
+			insertText: '"test[ing]"',
+			range: { 
+				startLineNumber: position.lineNumber,
+				endLineNumber: position.lineNumber,
+				startColumn: word.startColumn,
+				endColumn: word.endColumn
+			},
+		};
+
+		return {
+			suggestions: [ test_suggest ]
+		};
+	}
+}
 
 type EditorProps = {
 	setGraphDef: React.Dispatch<React.SetStateAction<string>>;
@@ -19,6 +51,15 @@ export default function Editor({ setGraphDef, wrappers, setWrappers, activeID,
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
     const editorContainerRef = useRef<HTMLDivElement>(null);
 
+	// on component mount
+	useEffect(() => {
+
+		// enable autocompletion provider for registered langauge
+		monaco.languages.registerCompletionItemProvider(
+			Fixed.MonacoLanguageID, new MyCompletionProvider);
+
+	}, []);
+
     // on monaco editor load
     useEffect(() => {
 
@@ -31,22 +72,13 @@ export default function Editor({ setGraphDef, wrappers, setWrappers, activeID,
 			editorRef.current = monaco.editor.create(
 				editorContainerRef.current, 
 				{
-					value: "",
 					model: null,
-					// automaticLayout: true,
 					minimap: { 
 						enabled: false 
 					},
-					// overviewRulerBorder: false,
-					// scrollbar: {
-					// 	horizontalScrollbarSize: 5,
-					// 	verticalScrollbarSize: 5,
-					// },
-					// wordWrap: "bounded",
-					// wrappingIndent: "indent",
-					// scrollBeyondLastLine: false,
 				}
 			);
+			// model set to null since all model creation is contained by ModelWrapper objects
 
 			if (editorRef.current) {
 				setActiveID(0);

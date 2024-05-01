@@ -10,6 +10,7 @@ export const Fixed = {
     ToastAutohideDelay_ms: 3000,
     WebStorageMaxidKey: "maxid#",
     WebStorageDirtyTimeout_ms: 5000,
+    MonacoLanguageID: "mylang",
 }
 
 // get a short preview of the given graph description to display on its tab

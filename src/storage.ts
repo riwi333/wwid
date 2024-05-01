@@ -27,7 +27,8 @@ export function loadWebStorage(ws: Storage): ModelWrapper[] {
 			if (item) {
 				mw.push({
 					id: nload,
-					model: monaco.editor.createModel(item!),
+					model: monaco.editor.createModel(item!, 
+						Fixed.MonacoLanguageID),
 				});
 
 				nload = nload + 1;

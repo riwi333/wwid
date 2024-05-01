@@ -16,7 +16,7 @@ import Viz from './Viz';
 
 const wrappers0 = [{
 	id: 0,
-	model: monaco.editor.createModel(""),
+	model: monaco.editor.createModel("", Fixed.MonacoLanguageID)
 }];
 
 // [todo] get/set all tabs; currently only store definition from active tab
@@ -40,6 +40,9 @@ export default function App() {
 
 	// on component mount
 	useEffect(() => {
+
+		// register custom language prior to create any text models
+		monaco.languages.register({ id: Fixed.MonacoLanguageID });
 
 		webStorageRef.current = localStorage;
 		const tmp = loadWebStorage(webStorageRef.current);

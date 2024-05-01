@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 
-import { ModelWrapper, previewModelText } from './common';
+import { Fixed, ModelWrapper, previewModelText } from './common';
 
 export type ToolbarProps = {
 	wrappers: ModelWrapper[];
@@ -22,7 +22,7 @@ export default function Toolbar({ wrappers, setWrappers, activeID, setActiveID }
 	const addTabClickHandler = () => {
 
 		const id1 = wrappers.length;		// ID is 0-indexed
-		const model1 = monaco.editor.createModel("");
+		const model1 = monaco.editor.createModel("", Fixed.MonacoLanguageID);
 
 		setWrappers([ 
 			...wrappers,
