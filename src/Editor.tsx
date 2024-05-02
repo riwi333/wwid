@@ -1,39 +1,94 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import * as monaco from 'monaco-editor';
 
 import { Fixed, ModelWrapper } from './common';
 
 // custom autocompletion provider
-class MyCompletionProvider implements monaco.languages.CompletionItemProvider {
+// class MyCompletionProvider implements monaco.languages.CompletionItemProvider {
+class MyCompletionProvider implements monaco.languages.InlineCompletionsProvider {
 
-	public provideCompletionItems(model: monaco.editor.ITextModel, 
-		position: monaco.Position, context: monaco.languages.CompletionContext, 
-		token: monaco.CancellationToken)
-		: monaco.languages.ProviderResult<monaco.languages.CompletionList> {
-		
-		console.log(position);
-		// console.log(context);
-		// console.log(token.toString());
+	// [todo] not unique with multiple page loads/web storage
+	public generateNodeID(): string {
 
-		let word = model.getWordUntilPosition(position);
-		let test_suggest: monaco.languages.CompletionItem = {
-			label: "test suggestion",
-			kind: monaco.languages.CompletionItemKind.Function,
-			documentation: "testing testy testing",
-			insertText: '"test[ing]"',
-			range: { 
-				startLineNumber: position.lineNumber,
-				endLineNumber: position.lineNumber,
-				startColumn: word.startColumn,
-				endColumn: word.endColumn
-			},
-		};
+		// use a UUID generator but only the first few bytes
+		// [todo] window.crypto is only available in certain web contexts (localhost is fine)
+		// [todo] deal with collisions (shorter UUID => more likely collisions)
+		let uuid = window.crypto.randomUUID();
+		let suuid = uuid.toString().slice(0, 4);
 
-		return {
-			suggestions: [ test_suggest ]
-		};
+		let id = "_" + suuid;
+
+		return id;
 	}
+
+	public provideInlineCompletions(model: monaco.editor.ITextModel, 
+		position: monaco.Position, 
+		context: monaco.languages.InlineCompletionContext, 
+		token: monaco.CancellationToken)
+		: monaco.languages.ProviderResult<monaco.languages.InlineCompletions> {
+	// public provideCompletionItems(model: monaco.editor.ITextModel, 
+	// 	position: monaco.Position, context: monaco.languages.CompletionContext, 
+	// 	token: monaco.CancellationToken)
+	// 	: monaco.languages.ProviderResult<monaco.languages.CompletionList> {
+
+		// determine what to insert based on current position/content
+
+		// console.log(position);
+
+		// activate autocomplete after TAB-ing a new line
+		let lineContent = model.getLineContent(position.lineNumber);
+		let match = lineContent.match(/^\s+$/);
+		if (match) {
+			// node ID + open brackets/escape quote
+			let insert = this.generateNodeID() + '["';
+
+			// // close brackets/escape quote
+			// let closeBracketEdit: monaco.editor.ISingleEditOperation = {
+			// 	text: '"]',
+			// 	range: {} as monaco.Range,
+			// };
+
+			// let word = model.getWordUntilPosition(position);
+		
+			// return {
+				// suggestions: [
+				// 	{
+				// 		label: "new node",
+				// 		kind: monaco.languages.CompletionItemKind.Function,
+				// 		documentation: "new line, new node",
+				// 		commitCharacters: [ "\t" ],
+				// 		insertText: '${1:' + insert + '}["${2:}"',
+				// 		insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				// 		range: {
+				// 			startLineNumber: position.lineNumber,
+				// 			endLineNumber: position.lineNumber,
+				// 			startColumn: word.startColumn,
+				// 			endColumn: word.endColumn
+				// 		}
+				// 	}
+				// ]
+			// };
+			return {
+				items: [
+					{
+						insertText: insert,
+					}
+				]
+			}
+		}
+
+		// return { suggestions: [] };
+		return { items: [] };
+	}
+
+	// public handleItemDidShow(completions: monaco.languages.InlineCompletions<monaco.languages.InlineCompletion>, item: monaco.languages.InlineCompletion, updatedInsertText: string): void {
+	// 	console.log(updatedInsertText);	
+	// }
+
+	public freeInlineCompletions(completions: 
+		monaco.languages.InlineCompletions<monaco.languages.InlineCompletion>)
+			: void {}
 }
 
 type EditorProps = {
@@ -55,7 +110,8 @@ export default function Editor({ setGraphDef, wrappers, setWrappers, activeID,
 	useEffect(() => {
 
 		// enable autocompletion provider for registered langauge
-		monaco.languages.registerCompletionItemProvider(
+		monaco.languages.registerInlineCompletionsProvider(
+		// monaco.languages.registerCompletionItemProvider(
 			Fixed.MonacoLanguageID, new MyCompletionProvider);
 
 	}, []);
