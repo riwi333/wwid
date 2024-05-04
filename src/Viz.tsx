@@ -14,30 +14,30 @@ export default function Viz({ graphDef, webStorageLoaded }: VizProps) {
     const mermaidDivRef = useRef<HTMLDivElement>(null);
 
     // on component mount
-	useEffect(() => {
+    useEffect(() => {
 
-		mermaid.initialize({
-			startOnLoad: false,
-			wrap: true,
-		});
+        mermaid.initialize({
+            startOnLoad: false,
+            wrap: true,
+        });
 
-	}, []);
+    }, []);
 
     // [todo] on initial render, mermaid render fails with "node is null";
     // need to be able to undo edits to DOM that mermaid.render does; as a
     // consequence the stored graph does not appear until graphDef changes
     useEffect(() => {
 
-		if (mermaidDivRef.current &&
+        if (mermaidDivRef.current &&
             webStorageLoaded) {
             
-			mermaid.render('viz', graphDef, mermaidDivRef.current)
-				.then((res) => {
+            mermaid.render('viz', graphDef, mermaidDivRef.current)
+                .then((res) => {
 
                     // [todo] sanitize SVG? or set mermaid security options?
-					setGraphSVG(res.svg);
-				})
-				.catch((err) => { 
+                    setGraphSVG(res.svg);
+                })
+                .catch((err) => { 
                    
                     // [] removing for now since the vast majority of "errors"
                     // are mid-typing syntax errors; idk if mermaid has full
@@ -46,7 +46,7 @@ export default function Viz({ graphDef, webStorageLoaded }: VizProps) {
                 });
         }
 
-	}, [ graphDef, webStorageLoaded ]);
+    }, [ graphDef, webStorageLoaded ]);
 
     return (
         <>
