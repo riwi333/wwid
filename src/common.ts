@@ -11,6 +11,7 @@ export const Fixed = {
     WebStorageMaxidKey: "maxid#",
     WebStorageDirtyTimeout_ms: 5000,
     MonacoLanguageID: "mylang",
+    DarkModeBackgroundColor: "#1e1e1e",     // see the vs code 'dark' theme
 }
 
 // get a short preview of the given graph description to display on its tab

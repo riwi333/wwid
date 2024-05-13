@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import * as monaco from 'monaco-editor';
 
@@ -98,13 +98,26 @@ type EditorProps = {
     activeID: number | null;
     setActiveID: React.Dispatch<React.SetStateAction<number | null>>;
     webStorageLoaded: boolean;
+    useDarkMode: boolean;
 }
 
 export default function Editor({ setGraphDef, wrappers, setWrappers, activeID, 
-    setActiveID, webStorageLoaded }: EditorProps) {
+    setActiveID, webStorageLoaded, useDarkMode }: EditorProps) {
+
+    const [ prevUseDarkMode, setPrevUseDarkMode ] = 
+        useState<boolean | null>(null);
 
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
     const editorContainerRef = useRef<HTMLDivElement>(null);
+
+    if (prevUseDarkMode === null || prevUseDarkMode !== useDarkMode) {
+        if (editorRef.current) {
+            let nextTheme = useDarkMode ? 'vs-dark' : 'vs';
+            editorRef.current.updateOptions({ theme: nextTheme });
+        }
+
+        setPrevUseDarkMode(useDarkMode);
+    }
 
     // on component mount
     useEffect(() => {
@@ -132,6 +145,7 @@ export default function Editor({ setGraphDef, wrappers, setWrappers, activeID,
                     minimap: { 
                         enabled: false 
                     },
+                    theme: useDarkMode ? 'vs-dark' : 'vs',
                 }
             );
             // model set to null since all model creation is contained by ModelWrapper objects

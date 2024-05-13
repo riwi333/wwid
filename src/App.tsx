@@ -13,6 +13,8 @@ import { loadWebStorage, saveWebStorage } from './storage';
 import Editor from './Editor';
 import Toolbar from './Toolbar';
 import Viz from './Viz';
+import DarkModeIcon from '../assets/bootstrap-icons/moon-stars-fill.svg';
+import LightModeIcon from '../assets/bootstrap-icons/moon.svg';
 
 const wrappers0 = [{
     id: 0,
@@ -34,9 +36,28 @@ export default function App() {
         useState<boolean>(false);
         const [ storageSaveToastBody, setStorageSaveToastBody ] = 
         useState<string>();
+    const [ useDarkMode, setUseDarkMode ] = useState<boolean>(false);
     
     const webStorageRef = useRef<Storage>();
     const timeoutRef = useRef<NodeJS.Timeout>();
+
+    // styling reactive to dark mode toggle
+    const appStyle: React.CSSProperties = { 
+        backgroundColor: useDarkMode ? Fixed.DarkModeBackgroundColor 
+            : 'transparent',
+    };
+    const toastStyle: React.CSSProperties = {
+        backgroundColor: useDarkMode ? Fixed.DarkModeBackgroundColor 
+            : 'transparent',
+        borderColor: useDarkMode ? 'white' : 'black',
+        color: useDarkMode ? 'white': 'black',
+    };
+    const toggleStyle: React.CSSProperties = {
+        border: '1px solid ' + (useDarkMode ? 'white' : 'black'),
+    };
+    const iconStyle: React.CSSProperties = {
+        filter: useDarkMode ? 'invert(1)' : 'invert(0)',
+    };
 
     // on component mount
     useEffect(() => {
@@ -88,56 +109,67 @@ export default function App() {
     }, [ graphDef ]);
 
     return (
-        <>
-            <Container fluid>
-                <Row>
-                    <Toolbar
+        <Container fluid style={ appStyle }>
+            <Row>
+                <Toolbar
+                    wrappers={ wrappers }
+                    setWrappers={ setWrappers }
+                    activeID={ activeID }
+                    setActiveID={ setActiveID }
+                />
+            </Row>
+            <Row className="primary-row">
+                <Col>
+                    <Editor
+                        setGraphDef={ setGraphDef }
                         wrappers={ wrappers }
                         setWrappers={ setWrappers }
                         activeID={ activeID }
                         setActiveID={ setActiveID }
+                        webStorageLoaded={ webStorageLoaded }
+                        useDarkMode={ useDarkMode }
                     />
-                </Row>
-                <Row className="primary-row">
-                    <Col>
-                        <Editor
-                            setGraphDef={ setGraphDef }
-                            wrappers={ wrappers }
-                            setWrappers={ setWrappers }
-                            activeID={ activeID }
-                            setActiveID={ setActiveID }
-                            webStorageLoaded={ webStorageLoaded }
-                        />
-                    </Col>
-                    <Col>
-                        <Viz 
-                            graphDef={ graphDef } 
-                            webStorageLoaded={ webStorageLoaded }
-                        />
-                    </Col>
-                </Row>
-                <ToastContainer
-                    position="bottom-start"
-                    style={{ zIndex: 1 }}
+                </Col>
+                <Col>
+                    <Viz 
+                        graphDef={ graphDef } 
+                        webStorageLoaded={ webStorageLoaded }
+                        useDarkMode={ useDarkMode }
+                    />
+                </Col>
+            </Row>
+            <div
+                className="dark-mode-toggle position-absolute top-0 end-0"
+                onClick={ () => setUseDarkMode(! useDarkMode) }
+                style={ toggleStyle }
+            >
+                <img 
+                    src={ useDarkMode ? DarkModeIcon : LightModeIcon } 
+                    style={ iconStyle } />
+            </div>
+            <ToastContainer
+                position="bottom-start"
+                style={{ zIndex: 1, }}
+            >
+                <Toast
+                    style={ toastStyle }
+                    show={ showStorageLoadToast } 
+                    onClose={ () => setShowStorageLoadToast(false) }
+                    delay={ Fixed.ToastAutohideDelay_ms }
+                    autohide
                 >
-                    <Toast 
-                        show={ showStorageLoadToast } 
-                        onClose={ () => setShowStorageLoadToast(false) }
-                        delay={ Fixed.ToastAutohideDelay_ms }
-                        autohide
-                    >
-                        <Toast.Body>{ storageLoadToastBody }</Toast.Body>
-                    </Toast>
-                    <Toast
-                        show={ showStorageSaveToast }
-                        onClose={ () => setShowStorageSaveToast(false) }
-                        delay={ Fixed.ToastAutohideDelay_ms }
-                        autohide
-                    >
-                        <Toast.Body>{ storageSaveToastBody }</Toast.Body>
-                    </Toast>
-                </ToastContainer>
-            </Container>
-        </>
+                    <Toast.Body>{ storageLoadToastBody }</Toast.Body>
+                </Toast>
+                <Toast
+                    style={ toastStyle }
+                    show={ showStorageSaveToast }
+                    onClose={ () => setShowStorageSaveToast(false) }
+                    delay={ Fixed.ToastAutohideDelay_ms }
+                    autohide
+                >
+                    <Toast.Body>{ storageSaveToastBody }</Toast.Body>
+                </Toast>
+            </ToastContainer>
+        </Container>
     );
-} 
+}

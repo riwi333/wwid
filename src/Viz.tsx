@@ -5,13 +5,23 @@ import mermaid from 'mermaid';
 type VizProps = {
     graphDef: string;
     webStorageLoaded: boolean;
+    useDarkMode: boolean;
 }
 
-export default function Viz({ graphDef, webStorageLoaded }: VizProps) {
+export default function Viz({ graphDef, webStorageLoaded, useDarkMode }: VizProps) {
 
     const [ graphSVG, setGraphSVG ] = useState<string>("");
+    const [ prevUseDarkMode, setPrevUseDarkMode ] = 
+        useState<boolean | null>(null);
 
     const mermaidDivRef = useRef<HTMLDivElement>(null);
+
+    if (prevUseDarkMode === null || prevUseDarkMode !== useDarkMode) {
+        if (mermaidDivRef.current) {
+            let nextTheme = useDarkMode ? 'dark' : 'default';
+            mermaid.initialize({ theme: nextTheme });
+        }
+    }
 
     // on component mount
     useEffect(() => {
@@ -19,6 +29,7 @@ export default function Viz({ graphDef, webStorageLoaded }: VizProps) {
         mermaid.initialize({
             startOnLoad: false,
             wrap: true,
+            theme: useDarkMode ? 'dark' : 'default',
         });
 
     }, []);
