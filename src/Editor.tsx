@@ -123,9 +123,9 @@ export default function Editor({ setGraphDef, wrappers, setWrappers, activeID,
     useEffect(() => {
 
         // enable autocompletion provider for registered langauge
-        monaco.languages.registerInlineCompletionsProvider(
-        // monaco.languages.registerCompletionItemProvider(
-            Fixed.MonacoLanguageID, new MyCompletionProvider);
+        // monaco.languages.registerInlineCompletionsProvider(
+        // // monaco.languages.registerCompletionItemProvider(
+        //     Fixed.MonacoLanguageID, new MyCompletionProvider);
 
     }, []);
 
