@@ -14,6 +14,20 @@ export const Fixed = {
     DarkModeBackgroundColor: "#1e1e1e",     // see the vs code 'dark' theme
 }
 
+// [todo] not unique with multiple page loads/web storage
+export function generateNodeID(): string {
+
+    // use a UUID generator but only the first few bytes
+    // [todo] window.crypto is only available in certain web contexts (localhost is fine)
+    // [todo] deal with collisions (shorter UUID => more likely collisions)
+    let uuid = window.crypto.randomUUID();
+    let suuid = uuid.toString().slice(0, 4);
+
+    let id = "_" + suuid;
+
+    return id;
+}
+
 // get a short preview of the given graph description to display on its tab
 export function previewModelText(model: monaco.editor.ITextModel | null)
     : string {
