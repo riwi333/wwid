@@ -7,7 +7,7 @@ function nodeInsert(editorInstance: monaco.editor.ICodeEditor, insert1: string) 
 
     let selectBefore = editorInstance.getSelection();
     if (selectBefore !== null) {
-        let insert2 = "\"]";
+        let insert2 = " \"]";   // introduce a space so mermaid does not throw syntax errors immediately before typing
         let edits: monaco.editor.IIdentifiedSingleEditOperation[] = [
             {
                 forceMoveMarkers: true,
@@ -19,7 +19,7 @@ function nodeInsert(editorInstance: monaco.editor.ICodeEditor, insert1: string) 
         let selectAfterColumn = selectBefore.startColumn + insert1.length;
         let selectAfter = [
             new monaco.Selection(selectBefore.startLineNumber, selectAfterColumn, 
-                selectBefore.endLineNumber, selectAfterColumn),
+                selectBefore.endLineNumber, selectAfterColumn + 1),
         ];
         editorInstance.executeEdits("nodeInsert", edits, selectAfter);
     }
