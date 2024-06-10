@@ -138,7 +138,7 @@ export default function App() {
                     />
                 </Col>
             </Row>
-            <div
+            {/* <div
                 className="dark-mode-toggle position-absolute top-0 end-0"
                 onClick={ () => setUseDarkMode(! useDarkMode) }
                 style={ toggleStyle }
@@ -146,7 +146,7 @@ export default function App() {
                 <img 
                     src={ useDarkMode ? DarkModeIcon : LightModeIcon } 
                     style={ iconStyle } />
-            </div>
+            </div> */}
             <ToastContainer
                 position="bottom-start"
                 style={{ zIndex: 1, }}
