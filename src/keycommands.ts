@@ -69,7 +69,8 @@ export const KeyCommands: monaco.editor.IActionDescriptor[] = [
     {
         id: "autonode",
         label: "auto-node",
-        keybindings: [ monaco.KeyMod.Shift | monaco.KeyCode.BracketLeft ],
+        keybindings: [ monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | 
+                monaco.KeyCode.BracketLeft ],
         run: (editorInstance) => {
 
             console.log("activate keycommand: autonode");
