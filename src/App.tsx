@@ -63,7 +63,7 @@ export default function App() {
     useEffect(() => {
 
         // register custom language prior to create any text models
-        monaco.languages.register({ id: Fixed.MonacoLanguageID });
+        // monaco.languages.register({ id: Fixed.MonacoLanguageID });
 
         webStorageRef.current = localStorage;
         const tmp = loadWebStorage(webStorageRef.current);
