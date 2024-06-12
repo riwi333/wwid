@@ -83,23 +83,27 @@ export default function Editor({ setGraphDef, wrappers, setWrappers, activeID,
 
     // switch monaco models on active tab/ID change
     useEffect(() => {
-        if (editorRef.current && activeID !== null) {
-            editorRef.current.setModel(wrappers[activeID].model);
-            editorRef.current.onDidChangeModelContent(() => {
+        if (editorRef.current) {
+            let activeWrapper = 
+                wrappers.find(wrapper => wrapper.id == activeID);
+            if (activeWrapper) {
+                editorRef.current.setModel(activeWrapper.model);
+                editorRef.current.onDidChangeModelContent(() => {
 
-                setGraphDef(editorRef.current!.getValue());
-                setWrappers(wrappers.map((wrapper) => {
+                    setGraphDef(editorRef.current!.getValue());
+                    setWrappers(wrappers.map((wrapper) => {
 
-                    if (wrapper.id === activeID) {
-                        return { 
-                            ...wrapper, 
-                            model: editorRef.current!.getModel() 
-                        };
-                    } else {
-                        return wrapper;
-                    }
-                }));
-            });
+                        if (wrapper.id === activeID) {
+                            return { 
+                                ...wrapper, 
+                                model: editorRef.current!.getModel() 
+                            };
+                        } else {
+                            return wrapper;
+                        }
+                    }));
+                });
+            }
 
             // sync visual text in editor and state
             setGraphDef(editorRef.current.getValue());

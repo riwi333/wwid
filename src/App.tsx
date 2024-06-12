@@ -13,8 +13,8 @@ import { loadWebStorage, saveWebStorage } from './storage';
 import Editor from './Editor';
 import Toolbar from './Toolbar';
 import Viz from './Viz';
-import DarkModeIcon from '../assets/bootstrap-icons/moon-stars-fill.svg';
-import LightModeIcon from '../assets/bootstrap-icons/moon.svg';
+// import DarkModeIcon from '../assets/bootstrap-icons/moon-stars-fill.svg';
+// import LightModeIcon from '../assets/bootstrap-icons/moon.svg';
 
 const wrappers0 = [{
     id: 0,
@@ -31,11 +31,13 @@ export default function App() {
     const [ showStorageLoadToast, setShowStorageLoadToast ] = 
         useState<boolean>(false);
     const [ storageLoadToastBody, setStorageLoadToastBody ] = 
-        useState<string>();
+        useState<string>("");
     const [ showStorageSaveToast, setShowStorageSaveToast ] = 
         useState<boolean>(false);
-        const [ storageSaveToastBody, setStorageSaveToastBody ] = 
-        useState<string>();
+    const [ storageSaveToastBody, setStorageSaveToastBody ] = 
+        useState<string>("");
+    const [ showErrorToast, setShowErrorToast ] = useState<boolean>(false);
+    const [ errorToastBody, setErrorToastBody ] = useState<string>("");
     const [ useDarkMode, setUseDarkMode ] = useState<boolean>(false);
     
     const webStorageRef = useRef<Storage>();
@@ -116,6 +118,8 @@ export default function App() {
                     setWrappers={ setWrappers }
                     activeID={ activeID }
                     setActiveID={ setActiveID }
+                    setShowErrorToast={ setShowErrorToast }
+                    setErrorToastBody={ setErrorToastBody }
                 />
             </Row>
             <Row className="primary-row">
@@ -168,6 +172,15 @@ export default function App() {
                     autohide
                 >
                     <Toast.Body>{ storageSaveToastBody }</Toast.Body>
+                </Toast>
+                <Toast
+                    style={ toastStyle }
+                    show={ showErrorToast }
+                    onClose={ () => setShowErrorToast(false) }
+                    delay={ Fixed.ToastAutohideDelay_ms }
+                    autohide
+                >
+                    <Toast.Body>{ errorToastBody }</Toast.Body>
                 </Toast>
             </ToastContainer>
         </Container>

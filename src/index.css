@@ -15,8 +15,13 @@ body,
 }
 
 .toolbar .btn {
-    max-width: 10%;
+    display: flex;
+    max-width: 20%;
     text-align: left;
+}
+
+.toolbar .btn img {
+    margin: auto 8px;
 }
 
 .toolbar .btn-add {
