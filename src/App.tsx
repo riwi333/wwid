@@ -183,6 +183,9 @@ export default function App() {
                     <Toast.Body>{ errorToastBody }</Toast.Body>
                 </Toast>
             </ToastContainer>
+            <footer>
+                <p>Powered (unofficially) by <a href="https://mermaid.js.org/">Mermaid</a></p>
+            </footer>
         </Container>
     );
 }
